@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
-import { AuthResponse } from '../types';
+import type { AuthResponse } from '../types';
 
 const schema = z.object({
     email: z.string().email(),
