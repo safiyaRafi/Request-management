@@ -21,11 +21,19 @@ const CreateRequest = () => {
     const navigate = useNavigate();
     const [employees, setEmployees] = useState<{ id: string; name: string }[]>([]);
     const [error, setError] = useState('');
+    const [loadingEmployees, setLoadingEmployees] = useState(true);
 
     useEffect(() => {
+        setLoadingEmployees(true);
         api.get('/users/employees')
-            .then(res => setEmployees(res.data))
-            .catch(console.error);
+            .then(res => {
+                setEmployees(res.data || []);
+            })
+            .catch(err => {
+                console.error('Failed to load employees:', err);
+                setError('Failed to load employees. Please refresh the page.');
+            })
+            .finally(() => setLoadingEmployees(false));
     }, []);
 
     const onSubmit = async (data: FormData) => {
@@ -65,8 +73,9 @@ const CreateRequest = () => {
                         <select
                             {...register('assignedToId')}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 border p-2"
+                            disabled={loadingEmployees}
                         >
-                            <option value="">Select an employee</option>
+                            <option value="">{loadingEmployees ? 'Loading employees...' : 'Select an employee'}</option>
                             {employees.map(e => (
                                 <option key={e.id} value={e.id}>{e.name}</option>
                             ))}
