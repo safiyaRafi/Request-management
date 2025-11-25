@@ -16,6 +16,10 @@ const options: swaggerJsdoc.Options = {
                 url: 'http://localhost:3000',
                 description: 'Development server',
             },
+            {
+                url: 'https://request-management.vercel.app',
+                description: 'Production server',
+            },
         ],
         components: {
             securitySchemes: {

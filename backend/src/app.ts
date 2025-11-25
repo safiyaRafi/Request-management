@@ -21,8 +21,10 @@ app.use(helmet({
         directives: {
             defaultSrc: ["'self'"],
             styleSrc: ["'self'", "'unsafe-inline'"],
-            scriptSrc: ["'self'", "'unsafe-inline'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
             imgSrc: ["'self'", "data:", "https:"],
+            fontSrc: ["'self'", "data:", "https:"],
+            connectSrc: ["'self'"],
         },
     },
 }));
@@ -64,8 +66,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 }));
 
 app.get('/', (req, res) => {
-    const protocol = req.protocol || 'https';
-    const host = req.get('host') || 'localhost:3000';
+    // Check for forwarded protocol (Vercel uses x-forwarded-proto)
+    const protocol = req.get('x-forwarded-proto') || req.protocol || 'https';
+    const host = req.get('host') || req.get('x-forwarded-host') || 'localhost:3000';
     const docsUrl = `${protocol}://${host}/api-docs`;
     res.json({
         message: 'Request Management API',
