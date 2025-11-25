@@ -15,16 +15,16 @@ dotenv.config();
 
 const app = express();
 
-// Configure helmet to allow Swagger UI assets
+// Configure helmet with permissive CSP for Swagger UI
 app.use(helmet({
     contentSecurityPolicy: {
         directives: {
-            defaultSrc: ["'self'"],
-            styleSrc: ["'self'", "'unsafe-inline'"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-            imgSrc: ["'self'", "data:", "https:"],
+            defaultSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https:", "data:"],
+            styleSrc: ["'self'", "'unsafe-inline'", "https:"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https:"],
+            imgSrc: ["'self'", "data:", "https:", "blob:"],
             fontSrc: ["'self'", "data:", "https:"],
-            connectSrc: ["'self'"],
+            connectSrc: ["'self'", "https:"],
         },
     },
 }));

@@ -93,7 +93,7 @@ const Dashboard = () => {
                         <div className="flex items-center space-x-4">
                             <span className="text-gray-700">Welcome, {user?.name} ({user?.role})</span>
                             <a
-                                href="http://localhost:3000/api-docs"
+                                href={`${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:3000'}/api-docs`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="text-indigo-600 hover:text-indigo-800 font-medium"
