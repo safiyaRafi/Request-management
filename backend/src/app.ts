@@ -15,19 +15,26 @@ dotenv.config();
 
 const app = express();
 
-// Configure helmet with permissive CSP for Swagger UI
-app.use(helmet({
-    contentSecurityPolicy: {
-        directives: {
-            defaultSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https:", "data:"],
-            styleSrc: ["'self'", "'unsafe-inline'", "https:"],
-            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https:"],
-            imgSrc: ["'self'", "data:", "https:", "blob:"],
-            fontSrc: ["'self'", "data:", "https:"],
-            connectSrc: ["'self'", "https:"],
-        },
-    },
-}));
+// Configure helmet - skip for api-docs to allow Swagger UI
+app.use((req, res, next) => {
+    if (req.path.startsWith('/api-docs')) {
+        // Skip helmet for Swagger UI
+        next();
+    } else {
+        helmet({
+            contentSecurityPolicy: {
+                directives: {
+                    defaultSrc: ["'self'"],
+                    styleSrc: ["'self'", "'unsafe-inline'"],
+                    scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+                    imgSrc: ["'self'", "data:", "https:"],
+                    fontSrc: ["'self'", "data:", "https:"],
+                    connectSrc: ["'self'"],
+                },
+            },
+        })(req, res, next);
+    }
+});
 // CORS configuration
 const allowedOrigins = [
     'http://localhost:5173',
@@ -59,11 +66,25 @@ app.use(cors({
 app.use(morgan('dev'));
 app.use(json());
 
-// Swagger documentation
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+// Swagger documentation - serve JSON spec
+app.get('/api-docs.json', (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+});
+
+// Swagger UI
+const swaggerUiOptions = {
     customCss: '.swagger-ui .topbar { display: none }',
     customSiteTitle: 'Request Management API Docs',
-}));
+    swaggerOptions: {
+        url: '/api-docs.json',
+        persistAuthorization: true,
+        displayRequestDuration: true,
+    },
+};
+
+app.use('/api-docs', swaggerUi.serve);
+app.get('/api-docs', swaggerUi.setup(swaggerSpec, swaggerUiOptions));
 
 app.get('/', (req, res) => {
     // Check for forwarded protocol (Vercel uses x-forwarded-proto)
