@@ -43,11 +43,13 @@ app.use(cors({
             return callback(null, true);
         }
         
-        // Allow any vercel.app subdomain for flexibility
-        if (origin && origin.includes('.vercel.app')) {
+        // Allow any vercel.app subdomain for flexibility (with or without protocol)
+        if (origin && (origin.includes('.vercel.app') || origin.includes('vercel.app'))) {
             return callback(null, true);
         }
         
+        // Log for debugging (remove in production if needed)
+        console.log('CORS blocked origin:', origin);
         callback(new Error('Not allowed by CORS'));
     },
     credentials: true
