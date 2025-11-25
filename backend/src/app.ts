@@ -37,11 +37,18 @@ app.use(cors({
     origin: function (origin, callback) {
         // Allow requests with no origin (mobile apps, curl, etc.)
         if (!origin) return callback(null, true);
+        
+        // Check exact match first
         if (allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
+            return callback(null, true);
         }
+        
+        // Allow any vercel.app subdomain for flexibility
+        if (origin && origin.includes('.vercel.app')) {
+            return callback(null, true);
+        }
+        
+        callback(new Error('Not allowed by CORS'));
     },
     credentials: true
 }));
