@@ -27,7 +27,7 @@ export const getRequests = async (req: Request, res: Response) => {
         });
 
         // If user is a manager, get requests to approve
-        let toApprove = [];
+        let toApprove: any[] = [];
         if (userRole === 'MANAGER') {
             toApprove = await prisma.request.findMany({
                 where: {
