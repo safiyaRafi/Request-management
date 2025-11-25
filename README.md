@@ -1,184 +1,116 @@
-# Request Management System - Setup Guide
+# Request Management System
 
-A full-stack request management application with authentication, CRUD operations, and role-based access control.
+A full-stack request management application with authentication, role-based access control, and approval workflows.
 
-## 📋 Prerequisites
+## ✨ Features
 
-- **Node.js** (v18 or higher)
-- **npm** or **yarn**
-- **Git**
+- � **Authentication:** JWT-based login and registration
+- 📋 **Request Management:** Create, assign, and track requests
+- 👥 **Role-Based Access:** Employee and Manager roles with different permissions
+- ✅ **Approval Workflow:** PENDING → APPROVED/REJECTED → CLOSED
+- 📚 **API Documentation:** Interactive Swagger UI
+- ⚡ **Modern Stack:** React + Express + Prisma + SQLite
 
 ## 🚀 Quick Start
 
-### 1. Clone the Repository
+### Prerequisites
+- Node.js (v18+)
+- npm or yarn
+
+### Installation
 
 ```bash
+# Clone the repository
 git clone https://github.com/YOUR_USERNAME/request-management.git
 cd request-management
-```
 
-### 2. Backend Setup
-
-#### Install Dependencies
-```bash
+# Backend setup
 cd backend
 npm install
-```
-
-#### Configure Environment Variables
-
-Create a `.env` file in the `backend` folder:
-
-```env
-JWT_SECRET=your-super-secret-key-change-this
-DATABASE_URL=file:./dev.db
-```
-
-> **Important:** Change `JWT_SECRET` to a secure random string in production!
-
-#### Initialize Database
-
-```bash
-# Generate Prisma client and create database
+echo "JWT_SECRET=your-secret-key\nDATABASE_URL=file:./dev.db" > .env
 npx prisma db push
-
-# (Optional) View database in Prisma Studio
-npx prisma studio
-```
-
-#### Start Backend Server
-
-```bash
 npm run dev
-```
 
-✅ Backend should now be running at `http://localhost:3000`
-
-### 3. Frontend Setup
-
-#### Install Dependencies
-```bash
-cd ../client
+# Frontend setup (in a new terminal)
+cd client
 npm install
-```
-
-#### Start Frontend
-
-```bash
 npm run dev
 ```
 
-✅ Frontend should now be running at `http://localhost:5173` (or similar port shown in terminal)
+📖 **For detailed setup instructions, see [SETUP_GUIDE.md](SETUP_GUIDE.md)**
 
-## 🧪 Testing the Application
+## 🧪 Quick Test
 
-### 1. Register a User
+1. Open `http://localhost:5173`
+2. Register a new user
+3. Login and create a request
+4. View API docs at `http://localhost:3000/api-docs`
 
-Navigate to `http://localhost:5173/register` and create an account:
+## 🏗️ Tech Stack
 
-- **Email:** `john.doe@example.com`
-- **Password:** `SuperSecret123`
-- **Name:** `John Doe`
-- **Role:** `EMPLOYEE`
+### Backend
+- **Framework:** Express.js + TypeScript
+- **Database:** SQLite with Prisma ORM
+- **Authentication:** JWT + bcrypt
+- **API Docs:** Swagger/OpenAPI
 
-### 2. Login
+### Frontend
+- **Framework:** React + TypeScript
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS
+- **Forms:** React Hook Form + Zod
+- **HTTP Client:** Axios
 
-Use the same credentials to login at `http://localhost:5173/login`
-
-### 3. Create a Request
-
-1. Click **"New Request"** on the dashboard
-2. Fill in the form:
-   - **Title:** Test Request
-   - **Description:** This is a test request
-   - **Assign To:** Select the user you created
-3. Click **"Create"**
-
-## 📚 API Documentation
-
-Once the backend is running, view the Swagger API docs:
-
-👉 `http://localhost:3000/api-docs`
-
-## 🏗️ Project Structure
+## 📂 Project Structure
 
 ```
 request-management/
-├── backend/                 # Express.js backend
+├── backend/           # Express.js API server
 │   ├── src/
-│   │   ├── controllers/    # Request handlers
-│   │   ├── routes/         # API routes
-│   │   ├── middleware/     # Auth middleware
-│   │   ├── config/         # Swagger config
-│   │   └── utils/          # Prisma client, logger
-│   ├── prisma/
-│   │   └── schema.prisma   # Database schema
-│   └── .env                # Environment variables
+│   │   ├── controllers/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   └── utils/
+│   └── prisma/
+│       └── schema.prisma
 │
-├── client/                  # React + Vite frontend
-│   ├── src/
-│   │   ├── pages/          # Login, Dashboard, CreateRequest
-│   │   ├── context/        # Auth context
-│   │   ├── api/            # Axios instance
-│   │   └── types/          # TypeScript types
-│   └── ...
+├── client/            # React frontend
+│   └── src/
+│       ├── pages/
+│       ├── context/
+│       └── api/
 │
-└── README.md               # This file
+├── README.md          # This file
+└── SETUP_GUIDE.md     # Detailed setup instructions
 ```
 
-## 🔒 Security Notes
+## � Documentation
 
-- `.env` files are **excluded** from Git (contains secrets)
-- Database files (`*.db`) are **excluded** from Git
-- JWT tokens expire after 1 day
-- Passwords are hashed with bcrypt before storage
+- **[Setup Guide](SETUP_GUIDE.md)** - Complete installation and configuration
+- **[API Docs](http://localhost:3000/api-docs)** - Interactive Swagger UI (when server is running)
 
-## 🛠️ Available Scripts
+## 🛠️ Available Commands
 
 ### Backend
 ```bash
-npm run dev         # Start development server with hot reload
-npm run build       # Build for production
-npm start           # Start production server
+npm run dev       # Start development server
+npm run build     # Build for production
+npm start         # Run production server
 ```
 
 ### Frontend
 ```bash
-npm run dev         # Start Vite dev server
-npm run build       # Build for production
-npm run preview     # Preview production build
+npm run dev       # Start Vite dev server
+npm run build     # Build for production
+npm run preview   # Preview production build
 ```
 
-## 🐛 Troubleshooting
+## � Security
 
-### "Cannot find module" errors
-```bash
-# Reinstall dependencies
-cd backend && npm install
-cd ../client && npm install
-```
-
-### Database connection issues
-```bash
-# Reset database
-cd backend
-rm dev.db
-npx prisma db push
-```
-
-### Port already in use
-- Backend (3000): Change `PORT` in `backend/src/server.ts`
-- Frontend (5173): Vite will auto-increment the port
-
-## 📖 Features
-
-✅ User authentication (JWT)  
-✅ Request CRUD operations  
-✅ Role-based access (Employee/Manager)  
-✅ Request approval workflow  
-✅ Swagger API documentation  
-✅ Loading states and error handling  
-✅ Responsive UI with Tailwind CSS
+- Environment variables stored in `.env` (excluded from Git)
+- Passwords hashed with bcrypt
+- JWT tokens with 24-hour expiration
+- Protected API routes with authentication middleware
 
 ## 🤝 Contributing
 
@@ -191,3 +123,7 @@ npx prisma db push
 ## 📝 License
 
 This project is open source and available under the MIT License.
+
+---
+
+**Need help?** Check the [Setup Guide](SETUP_GUIDE.md) or open an issue on GitHub.
