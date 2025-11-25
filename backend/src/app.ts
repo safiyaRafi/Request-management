@@ -64,9 +64,12 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
 }));
 
 app.get('/', (req, res) => {
+    const protocol = req.protocol || 'https';
+    const host = req.get('host') || 'localhost:3000';
+    const docsUrl = `${protocol}://${host}/api-docs`;
     res.json({
         message: 'Request Management API',
-        documentation: 'http://localhost:3000/api-docs'
+        documentation: docsUrl
     });
 });
 
