@@ -32,7 +32,10 @@ export const getRequests = async (req: Request, res: Response) => {
             toApprove = await prisma.request.findMany({
                 where: {
                     status: 'PENDING_APPROVAL',
-                    assignedTo: { managerId: userId },
+                    OR: [
+                        { assignedTo: { managerId: userId } },
+                        { assignedToId: userId }
+                    ]
                 },
                 include: {
                     assignedTo: { select: { id: true, name: true, email: true } },
