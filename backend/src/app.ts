@@ -88,7 +88,7 @@ const swaggerUiOptions = {
 };
 
 app.use('/api-docs', swaggerUi.serve);
-app.get('/api-docs', swaggerUi.setup(swaggerSpec, swaggerUiOptions));
+app.get('/api-docs', swaggerUi.setup(undefined, swaggerUiOptions));
 
 app.get('/', (req, res) => {
     // Check for forwarded protocol (Vercel uses x-forwarded-proto)
