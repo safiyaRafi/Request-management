@@ -76,19 +76,49 @@ app.get('/api-docs.json', (req, res) => {
 const swaggerUiPath = require('swagger-ui-dist').absolutePath();
 app.use('/api-docs', express.static(swaggerUiPath));
 
-// Swagger UI
-const swaggerUiOptions = {
-    customCss: '.swagger-ui .topbar { display: none }',
-    customSiteTitle: 'Request Management API Docs',
-    swaggerOptions: {
-        url: '/api-docs.json',
-        persistAuthorization: true,
-        displayRequestDuration: true,
-    },
-};
-
-app.use('/api-docs', swaggerUi.serve);
-app.get('/api-docs', swaggerUi.setup(undefined, swaggerUiOptions));
+// Swagger UI - serve custom HTML that loads our spec
+app.get('/api-docs', (req, res) => {
+    res.send(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Request Management API Docs</title>
+    <link rel="stylesheet" type="text/css" href="/api-docs/swagger-ui.css" />
+    <style>
+        html { box-sizing: border-box; overflow: -moz-scrollbars-vertical; overflow-y: scroll; }
+        *, *:before, *:after { box-sizing: inherit; }
+        body { margin:0; background: #fafafa; }
+        .swagger-ui .topbar { display: none }
+    </style>
+</head>
+<body>
+    <div id="swagger-ui"></div>
+    <script src="/api-docs/swagger-ui-bundle.js"></script>
+    <script src="/api-docs/swagger-ui-standalone-preset.js"></script>
+    <script>
+        window.onload = function() {
+            window.ui = SwaggerUIBundle({
+                url: "/api-docs.json",
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout",
+                persistAuthorization: true,
+                displayRequestDuration: true
+            });
+        };
+    </script>
+</body>
+</html>
+    `);
+});
 
 app.get('/', (req, res) => {
     // Check for forwarded protocol (Vercel uses x-forwarded-proto)
