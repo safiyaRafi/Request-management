@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import type { Request } from '../types';
-import { CheckCircle, XCircle, Archive, Clock, User, Calendar } from 'lucide-react';
+import { CheckCircle, XCircle, Archive, User, Calendar } from 'lucide-react';
 
 const Dashboard = () => {
     const { user, logout } = useAuth();
@@ -123,8 +123,8 @@ const Dashboard = () => {
                             <button
                                 onClick={() => setActiveTab('created')}
                                 className={`px-6 py-3 rounded-xl font-semibold transition-all shadow-md ${activeTab === 'created'
-                                        ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white transform scale-105'
-                                        : 'bg-white text-gray-700 hover:shadow-lg'
+                                    ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white transform scale-105'
+                                    : 'bg-white text-gray-700 hover:shadow-lg'
                                     }`}
                             >
                                 📝 Created by Me
@@ -132,8 +132,8 @@ const Dashboard = () => {
                             <button
                                 onClick={() => setActiveTab('assigned')}
                                 className={`px-6 py-3 rounded-xl font-semibold transition-all shadow-md ${activeTab === 'assigned'
-                                        ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white transform scale-105'
-                                        : 'bg-white text-gray-700 hover:shadow-lg'
+                                    ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white transform scale-105'
+                                    : 'bg-white text-gray-700 hover:shadow-lg'
                                     }`}
                             >
                                 📬 Assigned to Me
@@ -142,8 +142,8 @@ const Dashboard = () => {
                                 <button
                                     onClick={() => setActiveTab('toApprove')}
                                     className={`px-6 py-3 rounded-xl font-semibold transition-all shadow-md relative ${activeTab === 'toApprove'
-                                            ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white transform scale-105'
-                                            : 'bg-white text-gray-700 hover:shadow-lg'
+                                        ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white transform scale-105'
+                                        : 'bg-white text-gray-700 hover:shadow-lg'
                                         }`}
                                 >
                                     ⏳ Pending Approvals
@@ -186,8 +186,8 @@ const Dashboard = () => {
                                     <div
                                         key={req.id}
                                         className={`bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all transform hover:-translate-y-1 ${activeTab === 'toApprove' && req.status === 'PENDING_APPROVAL'
-                                                ? 'ring-4 ring-orange-400 ring-opacity-50'
-                                                : ''
+                                            ? 'ring-4 ring-orange-400 ring-opacity-50'
+                                            : ''
                                             }`}
                                     >
                                         {/* Card Header */}
