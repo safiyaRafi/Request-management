@@ -1,4 +1,5 @@
 import swaggerJsdoc from 'swagger-jsdoc';
+import path from 'path';
 
 const options: swaggerJsdoc.Options = {
     definition: {
@@ -36,9 +37,16 @@ const options: swaggerJsdoc.Options = {
             },
         ],
     },
-    apis: ['./src/routes/*.ts', './src/routes/*.js', './src/controllers/*.ts', './src/controllers/*.js'],
+    // Use absolute paths that work in both dev and production
+    apis: [
+        path.join(__dirname, '../routes/*.ts'),
+        path.join(__dirname, '../routes/*.js'),
+        path.join(__dirname, '../controllers/*.ts'),
+        path.join(__dirname, '../controllers/*.js'),
+    ],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
 
 export default swaggerSpec;
+
