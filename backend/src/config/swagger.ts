@@ -37,16 +37,17 @@ const options: swaggerJsdoc.Options = {
             },
         ],
     },
-    // Use absolute paths that work in both dev and production
+    // In production (Vercel), __dirname will be dist/config
+    // So we need to go up one level and then into routes/controllers
+    // Only use .js files since .ts files don't exist in production
     apis: [
-        path.join(__dirname, '../routes/*.ts'),
-        path.join(__dirname, '../routes/*.js'),
-        path.join(__dirname, '../controllers/*.ts'),
-        path.join(__dirname, '../controllers/*.js'),
+        path.join(__dirname, '..', 'routes', '*.js'),
+        path.join(__dirname, '..', 'controllers', '*.js'),
     ],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
 
 export default swaggerSpec;
+
 
