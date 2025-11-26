@@ -46,17 +46,17 @@ app.use(cors({
     origin: function (origin, callback) {
         // Allow requests with no origin (mobile apps, curl, etc.)
         if (!origin) return callback(null, true);
-        
+
         // Check exact match first
         if (allowedOrigins.indexOf(origin) !== -1) {
             return callback(null, true);
         }
-        
+
         // Allow any vercel.app subdomain for flexibility (with or without protocol)
         if (origin && (origin.includes('.vercel.app') || origin.includes('vercel.app'))) {
             return callback(null, true);
         }
-        
+
         // Log for debugging (remove in production if needed)
         console.log('CORS blocked origin:', origin);
         callback(new Error('Not allowed by CORS'));
@@ -71,6 +71,10 @@ app.get('/api-docs.json', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(swaggerSpec);
 });
+
+// Serve Swagger UI static files explicitly
+const swaggerUiPath = require('swagger-ui-dist').absolutePath();
+app.use('/api-docs', express.static(swaggerUiPath));
 
 // Swagger UI
 const swaggerUiOptions = {
